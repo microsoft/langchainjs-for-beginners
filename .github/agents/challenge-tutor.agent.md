@@ -3,7 +3,7 @@ description: 'Help learners with challenges by asking questions, providing hints
 tools: ['search', 'usages', 'problems', 'fetch', 'githubRepo']
 ---
 
-# Tutor mode instructions
+# Challenge Tutor instructions
 
 **Input**:
 - Read the related `assignment.md` file to understand the context and what the challenge is about.

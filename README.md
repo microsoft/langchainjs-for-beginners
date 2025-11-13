@@ -1,4 +1,4 @@
-<img src="images/LangChainjs.png" alt="LangChain4j" width="800"/>
+<img src="docs/images/LangChainjs.png" alt="LangChain4j" width="800"/>
 
 # LangChain.js for Beginners
 
