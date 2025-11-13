@@ -66,6 +66,9 @@ import "dotenv/config";
 //            Then invoke model again for final natural language response
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Multi-Tool Travel Assistant 🌍
@@ -164,6 +167,7 @@ Solutions for all challenges are available in the [`solution/`](./solution/) fol
 - **Execution pattern**: Check Example 3 in [`code/03-tool-execution.ts`](./code/03-tool-execution.ts)
 - **Multiple tools**: See Example 4 in [`code/04-multiple-tools.ts`](./code/04-multiple-tools.ts)
 - **Zod schemas**: Review the [Zod section](./README.md#🛠️-creating-tools-with-zod) in the README
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

@@ -72,6 +72,9 @@ import "dotenv/config";
 //    - Questions not in docs (agent may search but won't find)
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Conversational Agentic RAG 💬
@@ -156,6 +159,7 @@ Solutions available in [`solution/`](./solution/) folder. Try on your own first!
 - **Agentic RAG basics**: Review `02-agentic-rag.ts`
 - **Agent fundamentals**: Review [Getting Started with Agents](../05-agents/README.md)
 - **Retrieval tools**: Check `citation-rag.ts` in samples
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

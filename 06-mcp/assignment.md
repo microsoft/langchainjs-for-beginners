@@ -32,6 +32,9 @@ In this assignment, you'll practice connecting AI agents to external services us
 - Streamable HTTP transport is already configured for Context7
 - Remember to close the MCP client connection when done
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Challenge 2: Build a Multi-Tool Agent with MCP

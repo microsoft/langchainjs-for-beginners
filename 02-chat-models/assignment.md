@@ -70,6 +70,9 @@ import "dotenv/config";
 // 7. Show conversation history length on exit
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Temperature Experiment 🌡️
@@ -154,6 +157,7 @@ Solutions for all challenges are available in the [`solution/`](./solution/) fol
 - **Code issues**: Review examples in [`code/`](./code/)
 - **Errors**: Check the Chapter's error handling section
 - **Concepts**: Re-read and study this [Chapter](./README.md)
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

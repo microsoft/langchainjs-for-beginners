@@ -117,6 +117,9 @@ import "dotenv/config";
 - Focus on creating well-described tools so the agent knows when to use them
 - The agent will iterate through tools until it has enough information to answer
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Multi-Step Planning Agent 🎯
@@ -247,6 +250,7 @@ Solutions for all challenges are available in the [`solution/`](./solution/) fol
 - **Multi-tool agents**: Check Example 2 in [`code/02-create-agent-multi-tool.ts`](./code/02-create-agent-multi-tool.ts)
 - **ReAct pattern**: Re-read the [ReAct section](./README.md#🧠-the-react-pattern) in the README
 - **Manual agent loops**: Check the [`samples/`](./samples/) folder for manual loop implementations
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

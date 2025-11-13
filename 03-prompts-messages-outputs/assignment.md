@@ -64,6 +64,9 @@ import "dotenv/config";
 // 7. Test with new product descriptions and parse the JSON output
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Product Data Extractor with Structured Outputs 🏷️
@@ -157,6 +160,7 @@ Solutions for all challenges are available in the [`solution/`](./solution/) fol
 - **Template syntax**: Review examples in [`code/`](./code/)
 - **Few-shot issues**: Check Example 5 ([`code/05-few-shot.ts`](./code/05-few-shot.ts))
 - **Composition**: Review Example 6 ([`code/06-composition.ts`](./code/06-composition.ts))
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

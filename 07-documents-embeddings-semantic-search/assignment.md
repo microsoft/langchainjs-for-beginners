@@ -65,6 +65,9 @@ import "dotenv/config";
 // 8. Display results with formatted scores
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Semantic Book Search 📚
@@ -147,6 +150,7 @@ Solutions available in [`solution/`](./solution/) folder. Try on your own first!
 - **Embeddings**: Review examples in [`code/`](./code/)
 - **Similarity metrics**: Check cosine similarity in example 1
 - **Vector stores**: See example 2
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---

@@ -54,6 +54,9 @@ import "dotenv/config";
 //    - Display the response with personality name
 ```
 
+> [!TIP]
+> **🤖 Get help from [GitHub Copilot](../docs/copilot.md):** If you need assitance with this challenge, open this file in your editor and and [use the Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) to get personalized help and explanations.
+
 ---
 
 ## Bonus Challenge: Model Performance Comparison 🔬
@@ -140,6 +143,7 @@ Solutions for all challenges are available in the [`solution/`](./solution/) fol
 - **Stuck on code**: Review the examples in [`code/`](./code/)
 - **Error messages**: Check [Course Setup](../00-course-setup/README.md) troubleshooting
 - **Concepts unclear**: Re-read and study this [Chapter](./README.md)
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
 - **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
 
 ---
