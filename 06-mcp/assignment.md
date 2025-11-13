@@ -138,6 +138,14 @@ Check [`solution/`](./solution/) for reference implementations of all challenges
 
 ---
 
+## Need Help?
+
+- **Agent fundamentals**: Review [Getting Started with Agents](../05-agents/README.md)
+- **Any question**: Use the [Challenge Tutor agent](../docs/copilot.md#challenge-tutor-agent) in GitHub Copilot
+- **Still stuck**: Join our [Discord community](https://aka.ms/foundry/discord)
+
+---
+
 ## 💡 Tips for Success
 
 1. **Start Simple**: Begin with Challenge 1 to understand the basics
