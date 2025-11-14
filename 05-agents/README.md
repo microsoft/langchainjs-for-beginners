@@ -205,7 +205,7 @@ const lastMessage = response.messages[response.messages.length - 1];
 console.log(`Agent: ${lastMessage.content}`);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What does createAgent() do under the hood?"
 > - "How does createAgent() handle iteration limits and prevent infinite loops?"
 
@@ -300,7 +300,7 @@ for (const query of queries) {
 }
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does the agent decide which tool to use?"
 > - "Can I prioritize certain tools over others?"
 
@@ -442,7 +442,7 @@ const agent = createAgent({
 });
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How would I add request logging middleware?"
 > - "Can middleware modify tool arguments before execution?"
 

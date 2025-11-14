@@ -160,7 +160,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What does the invoke() method return and how do I access different properties?"
 > - "How does the configuration baseURL work with different AI providers?"
 
@@ -246,7 +246,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What's the difference between SystemMessage and HumanMessage?"
 > - "How would I add an AIMessage to continue this conversation?"
 
@@ -340,7 +340,7 @@ async function compareModels() {
 compareModels().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "Why do we create a new ChatOpenAI instance inside the loop?"
 > - "How can I add another model to this comparison?"
 

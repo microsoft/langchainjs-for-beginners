@@ -195,7 +195,7 @@ console.log("Tool created:", calculatorTool.name);
 console.log("Schema:", calculatorTool.schema);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "Why do we need to sanitize the input expression before evaluating it?"
 > - "How does the Zod schema help with type safety in this calculator tool?"
 
@@ -315,7 +315,7 @@ console.log("\nTool calls:", response.tool_calls);
 // }
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What's in the response.tool_calls array and how does it differ from response.content?"
 > - "Why does the LLM return structured tool calls instead of executing the function?"
 
@@ -426,7 +426,7 @@ const finalResponse = await model.invoke(messages);
 console.log("Final answer:", finalResponse.content);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "Why do we need to send tool results back to the LLM in step 3?"
 > - "How would I handle errors that occur during tool execution?"
 
@@ -556,7 +556,7 @@ for (const query of queries) {
 }
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does the LLM decide which tool to use for each query?"
 > - "Can I prioritize certain tools over others by adjusting their descriptions?"
 

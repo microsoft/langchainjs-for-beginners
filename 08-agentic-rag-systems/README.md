@@ -340,7 +340,7 @@ A: We accept all major credit cards, PayPal, and Apple Pay.
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does agent decision-making improve efficiency in agentic RAG?"
 > - "What factors should I consider when choosing between RAG and prompt engineering?"
 
@@ -584,7 +584,7 @@ for (const question of questions) {
 }
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does the agent decide when to use the retrieval tool vs answering directly?"
 > - "How would I add metadata filtering to the retrieval tool?"
 

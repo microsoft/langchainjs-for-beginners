@@ -223,7 +223,7 @@ try {
 
 > **💡 Simplification Note**: The actual code file uses `process.env.MCP_SERVER_URL || "https://mcp.context7.com/mcp"` with environment variable support. The snippet above is simplified to show the core concept. See the full file for production patterns.
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does MultiServerMCPClient differ from manually creating tools?"
 > - "Can I connect to multiple MCP servers simultaneously?"
 

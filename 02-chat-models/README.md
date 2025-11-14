@@ -179,7 +179,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "Why do we need to push AIMessage to the messages array after each response?"
 > - "How would I implement a loop to keep the conversation going with user input?"
 
@@ -279,7 +279,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does the 'for await...of' loop work with the stream?"
 > - "Can I collect all chunks into a single string while streaming?"
 
@@ -440,7 +440,7 @@ async function temperatureComparison() {
 temperatureComparison().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What temperature value should I use for a customer service chatbot?"
 > - "How do I add the maxTokens parameter to limit response length?"
 
@@ -630,7 +630,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does withRetry() implement exponential backoff?"
 > - "Can I customize the retry delay and max attempts with withRetry()?"
 
@@ -720,7 +720,7 @@ async function trackTokenUsage() {
 trackTokenUsage().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How can I track token usage across multiple API calls in a conversation?"
 > - "How would I calculate the cost based on token usage?"
 
@@ -916,7 +916,7 @@ const model = new ChatOpenAI({
 });
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "What are the advantages of initChatModel over using ChatOpenAI directly?"
 > - "How would I switch from OpenAI to Anthropic using initChatModel?"
 
