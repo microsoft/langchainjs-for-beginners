@@ -152,7 +152,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "When should I use messages vs templates in LangChain.js?"
 > - "How do agents use messages differently from RAG systems?"
 
@@ -266,7 +266,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How do I build a multi-turn conversation with message arrays?"
 > - "Can I serialize and deserialize message arrays for storage?"
 
@@ -437,7 +437,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does template.pipe(model) create a chain that can be invoked?"
 > - "What happens if I forget to provide one of the template variables?"
 
@@ -546,7 +546,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "When should I use ChatPromptTemplate vs PromptTemplate?"
 > - "How does stringTemplate.format() differ from using pipe and invoke?"
 
@@ -680,7 +680,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How many examples should I provide for effective few-shot prompting?"
 > - "Can I dynamically select which examples to include based on the input?"
 
@@ -798,7 +798,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does template.partial() work and when would I use it?"
 > - "What's the benefit of composing prompts vs using one large template?"
 
@@ -956,7 +956,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How does withStructuredOutput() ensure the response matches the schema?"
 > - "Can I make some Zod schema fields optional instead of required?"
 
@@ -1095,7 +1095,7 @@ async function main() {
 main().catch(console.error);
 ```
 
-> **🤖 Try with [GitHub Copilot](https://github.com/features/copilot) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
+> **🤖 Try with [GitHub Copilot](../docs/copilot.md) Chat:** Want to explore this code further? Open this file in your editor and ask Copilot:
 > - "How do I add validation constraints like min/max to Zod schema fields?"
 > - "How would I handle arrays of nested objects in a schema?"
 
