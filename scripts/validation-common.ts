@@ -37,6 +37,11 @@ export const SERVER_FILES = [
     successIndicator: "✅ MCP Server initialized and ready for connections", // Text to look for in stdout
     waitTime: 3000, // Wait 3 seconds after seeing success indicator
   },
+  {
+    file: "stdio-calculator-server.ts",
+    successIndicator: "📟 stdio MCP Calculator Server running", // Text to look for in stderr
+    waitTime: 2000, // Wait 2 seconds after seeing success indicator
+  },
 ];
 
 // Files to skip during validation
@@ -167,6 +172,23 @@ export function runServerExample(
 
     child.stderr.on("data", (data) => {
       stderr += data.toString();
+
+      // Also check stderr for success indicator (stdio servers log to stderr)
+      if (!serverStarted && stderr.includes(config.successIndicator)) {
+        serverStarted = true;
+
+        // Wait a bit to ensure server is stable, then kill it
+        setTimeout(() => {
+          clearTimeout(timeoutHandle);
+          child.kill();
+
+          resolve({
+            file: filePath,
+            success: true,
+            duration: Date.now() - startTime,
+          });
+        }, config.waitTime);
+      }
     });
 
     child.on("error", (error) => {
