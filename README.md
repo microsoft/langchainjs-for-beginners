@@ -89,7 +89,9 @@ You'll need access to an AI provider. We recommend:
 - **[Glossary](./GLOSSARY.md)** - Comprehensive definitions of all terms used throughout the course
 - **[LangChain.js Documentation](https://docs.langchain.com/oss/javascript/langchain/overview)** - Official LangChain.js docs for deeper dives
 - **[AI Agent with MCP tools Sample](https://github.com/microsoft/ai-agents-for-beginners-sample)** - Learn how to build a complete burger ordering system with a serverless API, web interfaces, and an MCP server that enables AI agents to browse menus, place orders, and track order status.
-- **[AI Travel Agents Sample](https://github.com/Azure-Samples/azure-ai-travel-agents)** - Learn how to orchestrate multiple AI agents to create a travel planning application using Azure AI services.
+- **[Serverless AI Chat with RAG using LangChain.js](https://github.com/Azure-Samples/serverless-chat-langchainjs)** - Build a serverless AI chat experience with Retrieval-Augmented Generation using LangChain.js and Azure.
+- **[AI Agent with MCP tools using LangChain.js](https://github.com/Azure-Samples/mcp-agent-langchainjs)** - Build AI agents that interact with real-world APIs using the Model Context Protocol (MCP) that runs on Azure Functions.
+- **[AI Travel Agents Sample](https://github.com/Azure-Samples/azure-ai-travel-agents)** - Learn how to orchestrate multiple AI agents to create a travel planning application using Azure AI services that runs on Azure Container Apps.
 
 ---
 
