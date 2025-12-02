@@ -37,7 +37,7 @@
     "@langchain/mcp-adapters": "^1.0.0",
     "@langchain/openai": "^1.1.2",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "langchain": "^1.0.6",
     "mathjs": "^15.1.0",
     "zod": "^3.25.76"
