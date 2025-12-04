@@ -1,6 +1,10 @@
 # Getting Started with Agents
 
-In this chapter, you'll learn to build AI [agents](../GLOSSARY.md#agent) that can reason about problems, select appropriate tools, and work iteratively towards solutions. You'll understand the [ReAct](../GLOSSARY.md#react-pattern) (Reasoning + Acting) pattern by implementing agent loops step-by-step, and discover how agents autonomously choose tools to accomplish complex tasks. These skills enable you to build autonomous AI systems that can handle complex, multi-step tasks.
+In this chapter, you'll learn to build AI [agents](../GLOSSARY.md#agent)—autonomous systems that can reason about problems, dynamically select appropriate tools, and work iteratively towards solutions. You'll master the [ReAct](../GLOSSARY.md#react-pattern) (Reasoning + Acting) pattern, the foundation of modern AI agents, which enables them to think about what needs to be done, act by using tools, observe the results, and repeat this cycle until they accomplish their goal.
+
+**Why agents matter:** In [Function Calling & Tools](../04-function-calling-tools/README.md), you learned to create tools, but you had to manually decide when to call each tool. Agents change this fundamentally—they make autonomous decisions about which tools to use, when to use them, and how many steps are needed to solve a problem. This transforms AI from a single-shot question-answerer into an intelligent system that can break down complex tasks, try different approaches, and work through multi-step problems independently.
+
+You'll discover how to build production-ready agents using LangChain's `createAgent()` API, give agents multiple tools and watch them intelligently select the right one for each query, implement middleware patterns for robust error handling and monitoring, and create autonomous systems that can handle real-world complexity. These skills enable you to build AI applications that go far beyond simple chat—from research assistants that coordinate multiple data sources to task automation systems that can plan and execute complex workflows.
 
 ## Prerequisites
 
