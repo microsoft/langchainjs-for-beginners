@@ -544,11 +544,10 @@ In addition to custom middleware, LangChain.js provides **built-in middleware** 
 import { createAgent, summarizationMiddleware, createMiddleware } from "langchain";
 
 // Custom logging middleware to track conversation state and show summaries
-const conversationLogger = createMiddleware({
-  name: "ConversationLogger",
+const logger = createMiddleware({
+  name: "Logger",
   wrapModelCall: (request, handler) => {
-    // Detect summarization by checking if message count decreased
-    // When it does, the first message contains the summary
+    // Track message count - when it drops below max seen, summarization occurred
     console.log(`[State] Messages: ${request.messages.length}`);
     return handler(request);
   },
@@ -557,14 +556,14 @@ const conversationLogger = createMiddleware({
 // Create agent with BOTH built-in and custom middleware
 const agent = createAgent({
   model,
-  tools: [quantumResearchTool],
+  tools: [researchTool],
   middleware: [
     summarizationMiddleware({
-      model,                                      // Model used for summarization
-      trigger: [{ tokens: 1000 }, { messages: 8 }], // OR logic: either limit triggers
-      keep: { messages: 6 },                      // Keep enough for tool call chains
+      model,                                // Model used for summarization
+      trigger: { tokens: 200, messages: 4 }, // AND logic: both conditions must be met
+      keep: { messages: 2 },                // Keep recent messages after summarization
     }),
-    conversationLogger,
+    logger,
   ],
 });
 ```
@@ -586,75 +585,81 @@ const agent = createAgent({
 
 ### Expected Output
 
-When you run `tsx 05-agents/code/04-builtin-middleware.ts`, you'll see summarization in action. The summary box appears each time the condensed context is updated:
+When you run `tsx 05-agents/code/04-builtin-middleware.ts`, you'll see summarization in action. The summary box appears when the message count drops (indicating summarization occurred):
 
 ```
 📚 Built-in Middleware: summarizationMiddleware Demo
-🔬 Starting quantum mechanics research session...
-────────────────────────────────────────────────────────────
 
-📝 Question 1/7 - Question 4/7
-[Messages grow: 1 → 5 → 7 → 9, Tokens: ~189 → ~764]
-[No summarization yet - thresholds not exceeded]
-────────────────────────────────────────────────────────────
+Shows how conversations are automatically condensed.
 
-📝 Question 5/7
-👤 Researcher: Tell me about quantum tunneling
-  [State] 📊 Messages: 8 | Tokens: ~1011
-  [State] 🔄 Summarization occurred! Here's the condensed context:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Here is a summary of the conversation to date:           │
-  │ What is quantum superposition?                           │
-  │ How does quantum entanglement work?                      │
-  │ Explain wave-particle duality                            │
-  │ What is Heisenberg's uncertainty principle?              │
-  └──────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────
+──────────────────────────────────────────────────────────────────────
+
+📝 Question 1/7
+👤 User: What is quantum superposition?
+  [State] 📊 Messages: 4 | Tokens: ~114
+
+🤖 Assistant: Quantum superposition is the principle that a quantum system
+can be in multiple states simultaneously until measured...
+──────────────────────────────────────────────────────────────────────
+
+📝 Question 2/7 - Question 5/7
+[Messages grow: 5 → 6 → 8 → 11, Tokens: ~198 → ~442]
+[No summarization yet - building up context]
+──────────────────────────────────────────────────────────────────────
 
 📝 Question 6/7
-👤 Researcher: What is the measurement problem?
-  [State] 📊 Messages: 9 | Tokens: ~1255
-  [State] 🔄 Summarization occurred! Here's the condensed context:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Here is a summary of the conversation to date:           │
-  │ ...previous topics...                                    │
-  │ Tell me about quantum tunneling  ← NEW                   │
-  └──────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────
+👤 User: What role does tunneling play in electronics?
+  [State] 📊 Messages: 9 | Tokens: ~359
+  [State] 🔄 Summarization occurred! Condensed context:
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ Here is a summary of the conversation to date:                   │
+  │                                                                  │
+  │ System instruction: You are a quantum physics research assistant │
+  │                                                                  │
+  │ User questions to address:                                       │
+  │ - What is quantum superposition?                                 │
+  └──────────────────────────────────────────────────────────────────┘
+
+🤖 Assistant: Quantum tunneling is both a useful physical mechanism exploited
+in many electronic devices and an unwanted leakage process...
+──────────────────────────────────────────────────────────────────────
 
 📝 Question 7/7
-👤 Researcher: What are the practical applications?
-  [State] 📊 Messages: 10 | Tokens: ~1504
-  [State] 🔄 Summarization occurred! Here's the condensed context:
-  ┌──────────────────────────────────────────────────────────┐
-  │ Here is a summary of the conversation to date:           │
-  │ ...previous topics...                                    │
-  │ What is the measurement problem?  ← NEW                  │
-  └──────────────────────────────────────────────────────────┘
-────────────────────────────────────────────────────────────
+👤 User: Summarize the key concepts we discussed
+  [State] 📊 Messages: 10 | Tokens: ~494
+  [State] 🔄 Summarization occurred! Condensed context:
+  ┌──────────────────────────────────────────────────────────────────┐
+  │ Here is a summary of the conversation to date:                   │
+  │ ...previous topics plus tunneling in electronics...              │
+  └──────────────────────────────────────────────────────────────────┘
 
-💡 Key Observations:
-   📚 Each response contains detailed explanations (~200-400 words)
-   📈 Without summarization, tokens would grow to 3000+
-   🔄 Summary box shows each time the condensed context updates
-   ✅ Topics accumulate in summary, preserving conversation history
+🤖 Assistant: Here's a concise summary of the key concepts we covered...
+──────────────────────────────────────────────────────────────────────
+
+💡 Key Takeaways:
+   • summarizationMiddleware automatically condenses long conversations
+   • Configure with trigger (when) and keep (how much to preserve)
+   • Reduces token usage while maintaining context
 ```
 
 ### How It Works
 
 **summarizationMiddleware**:
-- Monitors conversation length (tokens and/or messages) as conversation grows
-- When `trigger` thresholds are exceeded, older messages are summarized
-- The `keep` parameter controls how many recent messages are preserved
+- Monitors conversation length (tokens and/or messages) as the conversation grows
+- When `trigger` thresholds are exceeded, older messages are summarized into a condensed context
+- The `keep` parameter controls how many recent messages are preserved after summarization
 - The summary replaces older messages, maintaining context while reducing tokens
-- Works seamlessly with your custom middleware
+- Works seamlessly with your custom middleware (like the logger in this example)
+
+**Detecting summarization in custom middleware**:
+The example uses a simple pattern that tracks the maximum message count seen. When the current count drops below the max, summarization has occurred. The first message then contains the summary.
 
 **When to use summarizationMiddleware**:
-- AI agents with detailed, text-heavy responses
-- Long-running chat sessions
-- Customer support bots with extended conversations
+- Long-running chat sessions that may exceed context limits
+- Research agents with multi-turn conversations
+- Customer support bots with extended interactions
 - Tutorial or coaching applications
-- Any agent that may exceed context limits
+- Any agent where conversation history grows over time
 
 > **💡 Tip**: Built-in middleware like `summarizationMiddleware` handles common patterns so you can focus on custom logic specific to your application. Check the [LangChain Middleware Documentation](https://docs.langchain.com/oss/javascript/langchain/middleware/built-in) for other built-in options.
 

@@ -3,6 +3,7 @@ import {
   createMiddleware,
   summarizationMiddleware,
   HumanMessage,
+  SystemMessage,
   tool,
 } from "langchain";
 import { ChatOpenAI } from "@langchain/openai";
@@ -12,109 +13,47 @@ import "dotenv/config";
 /**
  * Example 4: Built-in Middleware - summarizationMiddleware
  *
- * This example demonstrates LangChain's built-in summarizationMiddleware,
- * which automatically summarizes long conversations to:
- * - Stay within model context limits
- * - Reduce token usage and costs
- * - Maintain conversation coherence
+ * Demonstrates how summarizationMiddleware automatically summarizes
+ * long conversations to stay within context limits and reduce token costs.
  *
- * Configuration options:
- * - trigger: { tokens: N, messages: M } - Summarize when either limit is exceeded
- * - keep: { messages: N } - Number of recent messages to preserve after summarization
- * - Can also use { fraction: 0.8 } for proportional triggers
- *
- * We use a quantum mechanics research assistant that provides detailed
- * explanations - perfect for showing how summarization condenses verbose
- * content while preserving key context.
+ * Configuration:
+ * - trigger: [{ tokens: N }, { messages: M }] - OR logic (either triggers)
+ * - trigger: { tokens: N, messages: M } - AND logic (both required)
+ * - keep: { messages: N } - Messages to preserve after summarization
  *
  * Run: npx tsx 05-agents/code/04-builtin-middleware.ts
- *
- * 🤖 Try asking GitHub Copilot Chat (https://github.com/features/copilot):
- * - "How does summarizationMiddleware decide when to summarize?"
- * - "What's the difference between trigger and keep options?"
  */
 
-// Quantum mechanics knowledge base with detailed explanations
-const quantumKnowledge: Record<string, string> = {
-  superposition: `Superposition is one of the most fundamental principles in quantum mechanics. It states that a quantum system can exist in multiple states simultaneously until it is measured or observed.
+// Simulated knowledge base - provides verbose responses to trigger summarization
+const knowledgeBase: Record<string, string> = {
+  superposition: `Superposition means a quantum system can exist in multiple states simultaneously until measured. Like Schrödinger's cat being both alive and dead until observed. This principle enables qubits to represent 0 and 1 at the same time, making quantum computing powerful.`,
 
-The classic example is Schrödinger's cat thought experiment: a cat in a sealed box with a radioactive atom is considered both alive AND dead until the box is opened. In mathematical terms, the quantum state is described as a linear combination of basis states, written as |ψ⟩ = α|0⟩ + β|1⟩, where α and β are complex probability amplitudes.
+  entanglement: `Entanglement occurs when particles become correlated so measuring one instantly affects the other, regardless of distance. Einstein called it "spooky action at a distance." It's essential for quantum cryptography and quantum computing algorithms.`,
 
-This principle has profound implications for quantum computing, where qubits can represent both 0 and 1 simultaneously, enabling parallel computation that classical computers cannot achieve.`,
-
-  entanglement: `Quantum entanglement is a phenomenon where two or more particles become correlated in such a way that the quantum state of each particle cannot be described independently. When particles are entangled, measuring one particle instantly affects the other, regardless of the distance between them.
-
-Einstein famously called this "spooky action at a distance" because it seemed to violate the principle that nothing can travel faster than light. However, entanglement doesn't actually transmit information faster than light - it's a correlation, not communication.
-
-Entanglement is crucial for quantum cryptography (ensuring secure communication), quantum teleportation (transferring quantum states), and quantum computing (enabling certain algorithms to work). Bell's theorem and subsequent experiments have confirmed that entanglement is a real phenomenon that cannot be explained by classical physics.`,
-
-  wave_particle: `Wave-particle duality is the concept that all matter and energy exhibits both wave-like and particle-like properties. This was one of the first major discoveries that distinguished quantum mechanics from classical physics.
-
-Light, for example, behaves as a wave in phenomena like interference and diffraction, but behaves as particles (photons) in the photoelectric effect. Similarly, electrons - traditionally thought of as particles - can create interference patterns when passed through a double slit, demonstrating wave behavior.
-
-The de Broglie hypothesis extended this to all matter, proposing that any particle has an associated wavelength given by λ = h/p, where h is Planck's constant and p is momentum. This wave-particle duality is not a contradiction but rather reflects the limitations of classical concepts when applied to quantum systems.`,
-
-  uncertainty: `Heisenberg's Uncertainty Principle is a fundamental limit on the precision with which certain pairs of physical properties can be simultaneously known. The most famous formulation involves position and momentum: the more precisely you know a particle's position, the less precisely you can know its momentum, and vice versa.
-
-Mathematically, this is expressed as ΔxΔp ≥ ℏ/2, where Δx is the uncertainty in position, Δp is the uncertainty in momentum, and ℏ is the reduced Planck constant. This isn't a limitation of our measuring instruments - it's a fundamental property of nature.
-
-The uncertainty principle has profound philosophical implications, suggesting that at the quantum level, the universe is inherently probabilistic rather than deterministic. It also explains why electrons don't spiral into atomic nuclei and is essential for understanding quantum tunneling.`,
-
-  tunneling: `Quantum tunneling is the phenomenon where a particle can pass through a potential energy barrier that it classically shouldn't be able to overcome. In classical physics, if a ball doesn't have enough energy to roll over a hill, it simply bounces back. In quantum mechanics, there's a probability the particle will "tunnel" through.
-
-This happens because quantum particles are described by wave functions that don't abruptly stop at barriers but decay exponentially through them. If the barrier is thin enough, there's a non-zero probability of finding the particle on the other side.
-
-Quantum tunneling has numerous real-world applications: it's essential for nuclear fusion in stars, it enables scanning tunneling microscopes to image individual atoms, and it's the basis for tunnel diodes in electronics. It's also a challenge in semiconductor design, as electrons can tunnel through thin insulating layers.`,
-
-  measurement: `The measurement problem is one of the deepest unsolved questions in quantum mechanics. It concerns what happens when a quantum system transitions from existing in superposition to having a definite measured value - a process called "wave function collapse."
-
-Before measurement, a quantum system is described by a wave function representing all possible states. Upon measurement, we always find the system in one definite state. But quantum mechanics doesn't explain HOW or WHY this collapse occurs - it only gives us probabilities for different outcomes.
-
-Various interpretations attempt to address this: the Copenhagen interpretation says collapse is fundamental and caused by observation; Many-Worlds interpretation says all outcomes occur in branching universes; pilot wave theory adds hidden variables. Each interpretation has supporters and critics, and experiments haven't definitively favored one over others.`,
-
-  applications: `Quantum mechanics has revolutionized technology in countless ways. Semiconductors and transistors - the foundation of all modern electronics - rely on quantum band theory. Lasers work through stimulated emission, a quantum process. MRI machines use quantum spin properties of atomic nuclei.
-
-Looking forward, quantum technologies promise even greater transformations. Quantum computers could solve problems intractable for classical computers, like simulating molecular interactions for drug discovery or breaking current encryption. Quantum sensors could detect gravitational waves or map brain activity with unprecedented precision.
-
-Quantum cryptography offers theoretically unbreakable encryption based on the laws of physics rather than mathematical complexity. And quantum networks could one day connect quantum computers and sensors into a quantum internet, enabling new forms of secure communication and distributed computing.`,
+  tunneling: `Quantum tunneling lets particles pass through barriers they classically couldn't overcome. It's why the sun shines (fusion), how electron microscopes work, and a challenge in chip design as transistors shrink.`,
 };
 
-// Research assistant tool that provides detailed quantum mechanics explanations
-const quantumResearchTool = tool(
+// Research tool that returns detailed explanations
+const researchTool = tool(
   async (input) => {
     const topic = input.topic.toLowerCase();
-
-    // Find matching topic
-    const matchedKey = Object.keys(quantumKnowledge).find(
-      (key) => topic.includes(key) || key.includes(topic.split(" ")[0])
-    );
-
-    if (matchedKey) {
-      return quantumKnowledge[matchedKey];
-    }
-
-    // Default response for unmatched topics
-    return `Quantum mechanics is the branch of physics that describes the behavior of matter and energy at the atomic and subatomic scales. Key concepts include superposition, entanglement, wave-particle duality, and the uncertainty principle. Each of these fundamentally challenges our classical intuitions about how the universe works, revealing a probabilistic rather than deterministic reality at the smallest scales.`;
+    const match = Object.keys(knowledgeBase).find((key) => topic.includes(key));
+    return match
+      ? knowledgeBase[match]
+      : `Quantum mechanics describes matter and energy at atomic scales, featuring superposition, entanglement, and tunneling - concepts that defy classical intuition.`;
   },
   {
-    name: "quantumResearch",
-    description:
-      "Get detailed explanations about quantum mechanics concepts including superposition, entanglement, wave-particle duality, uncertainty principle, quantum tunneling, measurement problem, and applications.",
+    name: "research",
+    description: "Get explanations about quantum mechanics topics",
     schema: z.object({
-      topic: z
-        .string()
-        .describe("The quantum mechanics topic to research (e.g., 'superposition', 'entanglement')"),
+      topic: z.string().describe("The topic to research"),
     }),
   }
 );
 
 async function main() {
   console.log("📚 Built-in Middleware: summarizationMiddleware Demo\n");
-  console.log("=".repeat(80));
-  console.log("This example shows how summarizationMiddleware manages long,");
-  console.log("text-heavy conversations by condensing older messages.\n");
-  console.log("Scenario: A quantum mechanics research assistant providing");
-  console.log("detailed explanations that would quickly fill context windows.\n");
+  console.log("Shows how conversations are automatically condensed.\n");
 
   const model = new ChatOpenAI({
     model: process.env.AI_MODEL,
@@ -122,164 +61,112 @@ async function main() {
     apiKey: process.env.AI_API_KEY,
   });
 
-  // Track conversation state across turns
-  let currentMessageCount = 0;
-  let currentTokenEstimate = 0;
-  let currentSummaryContent: string | null = null;
-  let previousSummaryContent: string | null = null;
+  // State tracking
+  const state = {
+    maxMessageCount: 0,
+    currentMessageCount: 0,
+    currentTokens: 0,
+    summaryContent: null as string | null,
+  };
 
-  // Custom logging middleware to track conversation state
-  const conversationLogger = createMiddleware({
-    name: "ConversationLogger",
+  // Simple logging middleware - detects summarization when message count drops below max
+  const logger = createMiddleware({
+    name: "Logger",
     wrapModelCall: (request, handler) => {
-      const messageCount = request.messages.length;
-
-      // Rough token estimate (4 chars per token average)
-      const estimatedTokens = request.messages.reduce((sum, msg) => {
+      state.currentMessageCount = request.messages.length;
+      state.currentTokens = request.messages.reduce((sum, msg) => {
         const content = typeof msg.content === "string" ? msg.content : "";
         return sum + Math.ceil(content.length / 4);
       }, 0);
 
-      // Check the first message for summary content
-      // When summarization occurs, the first message contains the condensed history
-      const firstMsg = request.messages[0];
-      if (firstMsg && typeof firstMsg.content === "string") {
-        const content = firstMsg.content;
-        // Detect if this looks like a summary (contains summary-like phrases or is a list of topics)
-        const looksLikeSummary =
-          content.includes("summary") ||
-          content.includes("conversation to date") ||
-          content.includes("discussed") ||
-          content.includes("covered") ||
-          (content.includes("?") && content.split("?").length > 2); // Multiple questions listed
-
-        if (looksLikeSummary && content !== previousSummaryContent) {
-          currentSummaryContent = content;
-        } else if (!looksLikeSummary) {
-          currentSummaryContent = null;
-        } else {
-          // Same summary as before, don't show again
-          currentSummaryContent = null;
-        }
+      // Summarization detected when message count is less than max seen
+      if (state.maxMessageCount > 0 && state.currentMessageCount < state.maxMessageCount) {
+        const firstMsg = request.messages[0];
+        state.summaryContent =
+          firstMsg && typeof firstMsg.content === "string" ? firstMsg.content : null;
+      } else {
+        state.summaryContent = null;
       }
 
-      currentMessageCount = messageCount;
-      currentTokenEstimate = estimatedTokens;
+      // Track maximum message count
+      if (state.currentMessageCount > state.maxMessageCount) {
+        state.maxMessageCount = state.currentMessageCount;
+      }
 
       return handler(request);
     },
   });
 
-  // Helper to log question start
-  const logQuestionStart = (questionNum: number, totalQuestions: number) => {
-    console.log(`\n📝 Question ${questionNum}/${totalQuestions}`);
-  };
-
-  // Helper to display the summary box
-  const displaySummaryBox = (summary: string) => {
-    console.log(`  [State] 🔄 Summarization occurred! Here's the condensed context:`);
-    console.log(`  ┌${"─".repeat(70)}┐`);
-    // Show first 500 chars of summary, formatted nicely
-    const truncatedSummary =
-      summary.length > 500 ? summary.substring(0, 500) + "..." : summary;
-    // Indent and wrap the summary
-    const lines = truncatedSummary.split("\n").slice(0, 8); // Max 8 lines
-    lines.forEach((line) => {
-      const trimmedLine = line.substring(0, 68);
-      console.log(`  │ ${trimmedLine.padEnd(68)} │`);
-    });
-    if (truncatedSummary.split("\n").length > 8) {
-      console.log(`  │ ${"... [truncated]".padEnd(68)} │`);
-    }
-    console.log(`  └${"─".repeat(70)}┘`);
-  };
-
-  // Helper to log state after agent completes
-  const logConversationState = () => {
-    console.log(`  [State] 📊 Messages: ${currentMessageCount} | Tokens: ~${currentTokenEstimate}`);
-
-    if (currentSummaryContent) {
-      displaySummaryBox(currentSummaryContent);
-      // Track this summary so we don't show it again if unchanged
-      previousSummaryContent = currentSummaryContent;
-    }
-  };
-
-  // Create agent with built-in summarization and custom logging
   const agent = createAgent({
     model,
-    tools: [quantumResearchTool],
+    tools: [researchTool],
     middleware: [
       summarizationMiddleware({
         model,
-        trigger: [{ tokens: 1000 }, { messages: 8 }], // OR logic: summarize when either limit exceeded
-        keep: { messages: 6 }, // Keep enough messages to preserve tool call chains
+        trigger: { tokens: 200, messages: 4 }, // AND: both conditions must be met
+        keep: { messages: 2 },
       }),
-      conversationLogger,
+      logger,
     ],
   });
 
-  // Multi-turn research conversation about quantum mechanics
-  const researchQuestions = [
+  const questions = [
     "What is quantum superposition?",
-    "How does quantum entanglement work?",
-    "Explain wave-particle duality",
-    "What is Heisenberg's uncertainty principle?",
-    "Tell me about quantum tunneling",
-    "What is the measurement problem in quantum mechanics?",
-    "What are the practical applications of quantum mechanics?",
+    "How does entanglement work?",
+    "Explain quantum tunneling",
+    "What are some practical applications?",
+    "How do superposition and entanglement connect?",
+    "What role does tunneling play in electronics?",
+    "Summarize the key concepts we discussed",
   ];
 
-  console.log("🔬 Starting quantum mechanics research session...\n");
-  console.log("─".repeat(80));
+  console.log("─".repeat(70));
 
-  const messages: HumanMessage[] = [];
+  // System message to encourage tool usage for detailed responses
+  const systemMessage = new SystemMessage(
+    "You are a quantum physics research assistant. Always use the research tool to provide accurate, detailed explanations. Keep your final responses concise."
+  );
+  const messages: (SystemMessage | HumanMessage)[] = [systemMessage];
 
-  for (let i = 0; i < researchQuestions.length; i++) {
-    const question = researchQuestions[i];
-
-    // Reset turn tracking and show question
-    logQuestionStart(i + 1, researchQuestions.length);
-    console.log(`👤 Researcher: ${question}\n`);
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    console.log(`\n📝 Question ${i + 1}/${questions.length}`);
+    console.log(`👤 User: ${question}\n`);
 
     messages.push(new HumanMessage(question));
+    const response = await agent.invoke({ messages: [...messages] });
 
-    const response = await agent.invoke({
-      messages: [...messages],
-    });
+    // Log state
+    console.log(`  [State] 📊 Messages: ${state.currentMessageCount} | Tokens: ~${state.currentTokens}`);
 
-    // Show conversation state after agent completes
-    logConversationState();
+    // Show summary box when summarization occurred
+    if (state.summaryContent) {
+      console.log(`  [State] 🔄 Summarization occurred! Condensed context:`);
+      console.log(`  ┌${"─".repeat(66)}┐`);
+      const summary = state.summaryContent;
+      const lines = summary.substring(0, 400).split("\n").slice(0, 6);
+      lines.forEach((line: string) => {
+        console.log(`  │ ${line.substring(0, 64).padEnd(64)} │`);
+      });
+      console.log(`  └${"─".repeat(66)}┘`);
+    }
 
+    // Max is updated in middleware, no need to update here
+
+    // Show response (truncated)
     const lastMessage = response.messages[response.messages.length - 1];
-
-    // Truncate display for readability (full response still in conversation)
     const content = String(lastMessage.content);
-    const displayContent =
-      content.length > 300
-        ? content.substring(0, 300) + "... [truncated for display]"
-        : content;
+    const display = content.length > 250 ? content.substring(0, 250) + "..." : content;
+    console.log(`\n🤖 Assistant: ${display}`);
+    console.log("\n" + "─".repeat(70));
 
-    console.log(`\n🤖 Assistant: ${displayContent}`);
-    console.log("\n" + "─".repeat(80));
-
-    // Small delay between questions
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   }
 
-  console.log("\n" + "=".repeat(80));
-  console.log("\n💡 Key Observations:\n");
-  console.log("   📚 Each response contains detailed explanations (~200-400 words)");
-  console.log("   📈 Without summarization, context would grow to thousands of tokens");
-  console.log("   🔄 summarizationMiddleware condenses older exchanges");
-  console.log("   ✅ Key context preserved: topics discussed, key concepts learned");
-  console.log("   💰 Reduces token usage while maintaining conversation coherence\n");
-
-  console.log("✅ When to use summarizationMiddleware:");
-  console.log("   • Research assistants with detailed explanations");
-  console.log("   • Customer support with extended troubleshooting");
-  console.log("   • Educational tutors with verbose content");
-  console.log("   • Any agent where responses are text-heavy");
+  console.log("\n💡 Key Takeaways:");
+  console.log("   • summarizationMiddleware automatically condenses long conversations");
+  console.log("   • Configure with trigger (when) and keep (how much to preserve)");
+  console.log("   • Reduces token usage while maintaining context");
 }
 
 main().catch(console.error);
