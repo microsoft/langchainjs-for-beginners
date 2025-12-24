@@ -29,7 +29,10 @@ async function main() {
   });
 
   // Create a model that returns structured output
-  const structuredModel = model.withStructuredOutput(PersonSchema);
+  // strict: true ensures the model output exactly matches the schema (recommended)
+  const structuredModel = model.withStructuredOutput(PersonSchema, {
+    strict: true,
+  });
 
   console.log("🧪 Testing with different inputs:\n");
   console.log("=".repeat(80));

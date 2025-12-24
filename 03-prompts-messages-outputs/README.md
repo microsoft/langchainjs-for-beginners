@@ -902,7 +902,10 @@ const PersonSchema = z.object({
 });
 
 // Create model that returns structured output
-const structuredModel = model.withStructuredOutput(PersonSchema);
+// strict: true ensures output exactly matches the schema (recommended)
+const structuredModel = model.withStructuredOutput(PersonSchema, {
+  strict: true,
+});
 
 // Get typed data instead of free text!
 const result = await structuredModel.invoke("My name is Alice, I'm 28...");
@@ -937,7 +940,10 @@ async function main() {
   });
 
   // Create a model that returns structured output
-  const structuredModel = model.withStructuredOutput(PersonSchema);
+  // strict: true ensures the model output exactly matches the schema (recommended)
+  const structuredModel = model.withStructuredOutput(PersonSchema, {
+    strict: true,
+  });
 
   // Now the AI returns typed data, not just text!
   const result = await structuredModel.invoke(
@@ -1024,8 +1030,13 @@ const CompanySchema = z.object({
   isPublic: z.boolean(),            // Multiple data types
 });
 
+// Create structured model with strict mode for reliable schema compliance
+const structuredModel = model.withStructuredOutput(CompanySchema, {
+  strict: true,
+});
+
 // Combine template with structured output
-const chain = template.pipe(model.withStructuredOutput(CompanySchema));
+const chain = template.pipe(structuredModel);
 ```
 
 **Code**: [`code/08-zod-schemas.ts`](./code/08-zod-schemas.ts)  
@@ -1061,8 +1072,10 @@ async function main() {
     isPublic: z.boolean().describe("Whether the company is publicly traded"),
   });
 
-  // Create structured model
-  const structuredModel = model.withStructuredOutput(CompanySchema);
+  // Create structured model with strict mode for reliable schema compliance
+  const structuredModel = model.withStructuredOutput(CompanySchema, {
+    strict: true,
+  });
 
   // Create a prompt template
   const template = ChatPromptTemplate.fromMessages([

@@ -36,8 +36,10 @@ async function main() {
     isPublic: z.boolean().describe("Whether the company is publicly traded"),
   });
 
-  // Create structured model
-  const structuredModel = model.withStructuredOutput(CompanySchema);
+  // Create structured model with strict mode for reliable schema compliance
+  const structuredModel = model.withStructuredOutput(CompanySchema, {
+    strict: true,
+  });
 
   // Create a prompt template
   const template = ChatPromptTemplate.fromMessages([
