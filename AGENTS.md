@@ -132,9 +132,6 @@ This compiles 71 TypeScript files to check for:
 ```bash
 # Run all code examples with actual API calls
 npm test
-
-# Alternative command
-npm run validate
 ```
 
 **Important Notes**:
@@ -498,9 +495,6 @@ npm run dev <file>            # Watch mode
 npm run build                 # Type-check (fast)
 npm test                      # Full validation (slow)
 npx tsx <file>                # Run individual file
-
-# Validation
-npm run validate              # Same as npm test
 
 # Trigger CI/CD validation
 git commit -m "Your message validate-examples"  # Triggers GitHub Actions
