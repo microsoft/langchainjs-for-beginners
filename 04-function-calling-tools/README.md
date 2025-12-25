@@ -692,6 +692,72 @@ const emailTool = tool(
 
 ---
 
+## 🌐 Provider Built-in Tools
+
+So far, you've created custom tools using the `tool()` function. But AI providers like OpenAI and Anthropic also offer **built-in tools** that are optimized for their models—no custom implementation required.
+
+### What Are Provider Built-in Tools?
+
+Provider built-in tools are pre-configured capabilities that AI providers offer natively:
+
+| Provider | Built-in Tools |
+|----------|---------------|
+| **OpenAI** | Web search, file search, code interpreter, image generation |
+| **Anthropic** | Web search, web fetch, text editor, computer use |
+
+These tools are managed by the provider and don't require you to implement the execution logic.
+
+### Example: OpenAI Web Search
+
+```typescript
+import { ChatOpenAI, tools } from "@langchain/openai";
+
+const model = new ChatOpenAI({ model: "gpt-5-mini" });
+
+// Use OpenAI's built-in web search tool
+const response = await model.invoke(
+  "What are the latest TypeScript 5.9 features?",
+  { tools: [tools.webSearch()] }
+);
+
+console.log(response.content);
+// Response includes up-to-date information from the web
+```
+
+### Example: Anthropic Web Search
+
+```typescript
+import { ChatAnthropic, tools } from "@langchain/anthropic";
+
+const model = new ChatAnthropic({ model: "claude-sonnet-4-5-20250929" });
+
+// Use Anthropic's built-in web search tool
+const response = await model.invoke(
+  "What is the current weather in Seattle?",
+  { tools: [tools.webSearch_20250305()] }
+);
+
+console.log(response.content);
+// Response includes real-time web data with source citations
+```
+
+### Custom Tools vs Provider Built-in Tools
+
+| Aspect | Custom Tools | Provider Built-in Tools |
+|--------|-------------|------------------------|
+| **Implementation** | You write the logic | Provider handles it |
+| **Flexibility** | Full control | Limited configuration |
+| **Use case** | Business-specific logic | Common capabilities (search, files) |
+| **Execution** | Your code executes | Provider executes |
+
+**When to use which:**
+- **Custom tools**: When you need specific business logic, API integrations, or database access
+- **Provider built-in tools**: When you need common capabilities like web search without managing infrastructure
+
+> **📚 Learn More**: See the [OpenAI Tools Documentation](https://docs.langchain.com/oss/javascript/integrations/tools/openai) and [Anthropic Tools Documentation](https://docs.langchain.com/oss/javascript/integrations/tools/anthropic) for all available built-in tools and configuration options.
+
+---
+
 ## 🗺️ Concept Map
 
 This chapter taught you the complete function calling workflow:
@@ -711,14 +777,15 @@ graph LR
 
 ## 🎓 Key Takeaways
 
-- **Function calling** lets LLMs trigger real-world actions
-- **LLMs generate** function calls, but don't execute them
+- **Function calling** connects LLMs to real-world actions (via your code)
+- **LLMs generate** function calls, but don't execute them - your code does
 - **Tools** are created with `tool()` and Zod schemas
 - **bindTools()** makes tools available to the model
 - **Type safety** with Zod prevents errors
 - **Clear descriptions** help LLMs choose the right tool
 - **Error handling** makes tools robust
 - **Multiple tools** enable complex capabilities
+- **Provider built-in tools** offer pre-configured capabilities like web search without custom implementation
 - **Tools are the foundation for agents** - Next, you'll see how agents use tools to autonomously solve problems
 
 ---
