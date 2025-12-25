@@ -351,6 +351,23 @@ Tool calls: [
 
 **Important**: The LLM doesn't actually calculate anything! It only *describes* which tool to call and with what arguments. Your code must execute the tool (see Example 3).
 
+> **💡 Tip: Model Profiles (Beta)** - Not all models support tool calling. Before binding tools, you can check a model's capabilities using the `.profile` getter (note: this feature is in beta and subject to change):
+>
+> ```typescript
+> const model = new ChatOpenAI({ /* config */ });
+>
+> // Check what the model supports before binding tools
+> if (model.profile.toolCalling) {
+>   const modelWithTools = model.bindTools([calculatorTool]);
+>   // Use the model with tools...
+> } else {
+>   // Fall back to a different approach or model
+>   console.log("This model doesn't support tool calling");
+> }
+> ```
+>
+> The profile includes capabilities like `toolCalling`, `structuredOutput`, `imageInputs`, and more. This can be useful when your application needs to work with different models that may have varying capabilities. [Learn more about Model Profiles](https://docs.langchain.com/oss/javascript/langchain/models#model-profiles).
+
 ---
 
 ## 🔄 Handling Tool Execution
