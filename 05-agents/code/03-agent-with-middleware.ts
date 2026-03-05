@@ -101,11 +101,11 @@ async function main() {
       try {
         return await handler(request);
       } catch (error: any) {
-        console.error(`  [Middleware] ⚠️  Tool "${request.tool.name}" failed: ${error.message}`);
+        console.error(`  [Middleware] ⚠️  Tool "${request.tool?.name}" failed: ${error.message}`);
         console.log(`  [Middleware] 🔄 Returning fallback message\n`);
         // Return graceful fallback as a ToolMessage
         return new ToolMessage({
-          content: `I encountered an error while using the ${request.tool.name} tool: ${error.message}. Let me try a different approach to answer your question.`,
+          content: `I encountered an error while using the ${request.tool?.name} tool: ${error.message}. Let me try a different approach to answer your question.`,
           tool_call_id: request.toolCall.id || "",
         });
       }

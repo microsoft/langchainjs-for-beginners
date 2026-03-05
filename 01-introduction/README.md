@@ -195,7 +195,7 @@ The `ChatOpenAI` constructor takes three key properties: `model` (which AI model
 We read these from environment variables (`AI_MODEL`, `AI_ENDPOINT`, `AI_API_KEY`) defined in your `.env` file. This keeps credentials out of code and lets you switch providers by updating `.env`.
 
 **Why use environment variables?**
-- `AI_MODEL` specifies which AI model to use (like `gpt-5` or `gpt-5-mini`)
+- `AI_MODEL` specifies which AI model to use (like `gpt-5-mini` or `gpt-5`)
 - `AI_ENDPOINT` tells the application where to find the AI service
 - `AI_API_KEY` provides authentication credentials
 
@@ -294,7 +294,10 @@ Think of it like choosing between calculators: a scientific calculator handles c
 
 ### Example 3: Model Comparison
 
-Let's see how to programmatically compare different models side-by-side.
+Let's see how to programmatically compare different models side-by-side. 
+
+> [!NOTE]
+> If you run this using Microsoft Foundry, you'll need to have both `gpt-5` and `gpt-5-mini` deployed as described in the [Microsoft Foundry Setup](../00-course-setup/APPENDIX.md#microsoft-foundry-setup) section.
 
 **Code**: [`code/03-model-comparison.ts`](./code/03-model-comparison.ts)  
 **Run**: `tsx 01-introduction/code/03-model-comparison.ts`

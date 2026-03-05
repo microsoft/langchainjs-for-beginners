@@ -36,7 +36,7 @@ You'll need to deploy two models for this course:
    - **Deployment type**: Global Standard
    - Click **Deploy**
 6. Wait for deployment to complete
-7. Follow the same process and deploy `gpt-5` as well
+7. Follow the same process and deploy `gpt-5` as well. Note that you may have to complete a form to request access to `gpt-5` if it's not immediately available to deploy.
 
 > **Why deploy both models?** `gpt-5-mini` is used throughout the course for most examples (it's faster and more cost-effective). `gpt-5` is used in Chapter 1 for model comparison exercises to demonstrate the performance and capability differences between models.
 
