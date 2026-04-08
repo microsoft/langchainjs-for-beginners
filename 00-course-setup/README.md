@@ -163,9 +163,12 @@ Open `.env` in your text editor and configure your AI provider.
 
 ```bash
 AI_API_KEY=ghp_your_github_token_here
-AI_ENDPOINT=https://models.inference.ai.azure.com
-AI_MODEL=gpt-5-mini
+AI_ENDPOINT=https://models.github.ai/inference
+AI_MODEL=openai/gpt-5-mini
 ```
+
+ > [!TIP]
+ > The free `gpt-5-mini` and `gpt-5` Github models can get busy from time to time so if you hit an error using them, try changing the `AI_MODEL` value to `openai/gpt-4.1-mini` or `openai/gpt-4.1`instead.
 
 **Replace `ghp_your_github_token_here` with your actual GitHub token!**
 
