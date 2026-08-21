@@ -2,10 +2,10 @@
 
 ## Project Overview
 
-This is **LangChain.js for Beginners** - a comprehensive educational course teaching AI application development with LangChain.js and TypeScript. The repository contains 8 sections (00-07) covering everything from basic chat models to autonomous agents, RAG systems, and Model Context Protocol (MCP) integration.
+This is **LangChain.js for Beginners** - a comprehensive educational course teaching AI application development with LangChain.js and TypeScript. The repository contains 9 chapters (00-08) covering everything from basic chat models to autonomous agents, RAG systems, and Model Context Protocol (MCP) integration.
 
-**Architecture**: Educational course structure with 71+ runnable TypeScript examples organized by topic
-**Key Technologies**: LangChain.js, TypeScript, tsx, Node.js >=22.0.0 (LTS), MCP, OpenAI/Microsoft Foundry/Anthropic
+**Architecture**: Educational course structure with 80+ runnable TypeScript examples organized by topic
+**Key Technologies**: LangChain.js, TypeScript, tsx, Node.js >=22.0.0 (LTS), MCP, Microsoft Foundry
 **Purpose**: Teaching developers how to build AI-powered applications using an agent-first philosophy
 **Teaching Approach**: Agent-first (Tools → Agents → Documents → Agentic RAG)
 
@@ -26,9 +26,11 @@ LangChainJS-for-Beginners/
 │       └── mcp-rag-server/      # RAG as an MCP service (capstone example)
 ├── data/                     # Sample data files
 ├── scripts/                  # Build and validation scripts
-│   ├── build-check.ts        # TypeScript compilation validator
-│   ├── test-setup.ts         # Environment setup tester
-│   └── validate-examples.ts  # Code example test runner
+│   ├── build-check.ts                # TypeScript compilation validator
+│   ├── test-setup.ts                 # Environment setup tester
+│   ├── validation-common.ts          # Shared validation config (timeouts, interactive/server/skip lists)
+│   ├── validate-examples.ts          # Sequential example test runner
+│   └── validate-examples-parallel.ts # Parallel example test runner (CI)
 ├── .env.example              # Environment configuration template
 └── GLOSSARY.md               # Comprehensive course glossary
 ```
@@ -94,7 +96,7 @@ When working on course content or examples:
 1. Each chapter is self-contained with its own code examples
 2. Code files use ES modules (`"type": "module"` in package.json)
 3. All examples use environment variables for configuration (never hardcode keys)
-4. Interactive examples should be marked in `validate-examples.ts`
+4. Interactive, server, and skipped examples should be marked in `scripts/validation-common.ts`
 
 ## Testing Instructions
 
@@ -105,51 +107,57 @@ When working on course content or examples:
 npm run build
 ```
 
-This compiles 71 TypeScript files to check for:
+This type-checks all course TypeScript files (currently 80+) for:
 - ✅ Type errors
 - ✅ Syntax errors
 - ✅ Import issues
 - ✅ No API calls - just compilation
 
-### Full Validation (Comprehensive - 20-40 minutes)
+### Full Validation (Comprehensive - 20-40 minutes sequential, ~5 minutes parallel)
 
 ```bash
-# Run all code examples with actual API calls
+# Run all code examples sequentially (avoids rate limiting)
 npm test
+
+# Run all code examples in parallel (faster; used in CI)
+npm run test:parallel
 ```
 
 **Important Notes**:
 - Requires valid `AI_API_KEY`, `AI_ENDPOINT`, `AI_MODEL`, and `AI_EMBEDDING_MODEL` in `.env`
-- Tests all examples sequentially to avoid rate limiting
+- Sequential `npm test` is safer against rate limits; CI uses `npm run test:parallel`
 - Interactive files are tested with automated input
-- Some examples have 60-second timeouts (marked in `SLOW_FILES`)
+- All examples use a 120-second timeout (`TIMEOUT_MS` in `scripts/validation-common.ts`)
 - Examples in `future/` folder are not included in validation
 
 ### Testing Specific Examples
 
 ```bash
 # Run a single example
-npx tsx 03-prompt-templates/code/01-basic-template.ts
+npx tsx 03-prompts-messages-outputs/code/03-basic-template.ts
 
 # Test a specific chapter
-npx tsx 06-rag-systems/code/*.ts
+npx tsx 08-agentic-rag-systems/code/*.ts
 ```
 
 ### Test File Categories
+
+Configured in `scripts/validation-common.ts`:
 
 **Interactive Files** (tested with automated input):
 - `chatbot.ts`
 - `streaming-chat.ts`
 - `qa-program.ts`
 - `03-human-in-loop.ts`
+- `conversational-rag.ts`
 
-**Slow Files** (60-second timeout):
-- `03-model-comparison.ts` - Compares multiple models
-- `03-parameters.ts` - Tests 9 parameter combinations
-- `temperature-lab.ts` - Temperature experiments
-- `04-error-handling.ts` - Error scenarios
-- `robust-chat.ts` - Retry logic testing
-- And others listed in `validate-examples.ts`
+**Server Files** (started, checked for a ready message, then stopped):
+- `basic-mcp-server.ts`
+- `mcp-rag-server.ts`
+- `stdio-calculator-server.ts`
+
+**Skipped Files** (`SKIP_FILES`):
+- `temperature-lab.ts` - Uses `temperature=0`, which some Microsoft Foundry models reject
 
 ## Code Style
 
@@ -224,26 +232,30 @@ npm run build
 
 ### Validation Process
 
-The repository uses `scripts/validate-examples.ts` for comprehensive testing:
+The repository uses `scripts/validate-examples.ts` (sequential) and `scripts/validate-examples-parallel.ts` (CI):
 
 ```bash
-# Full validation (runs all examples)
+# Full validation (runs all examples sequentially)
 npm test
+
+# Parallel validation (faster; used in GitHub Actions)
+npm run test:parallel
 ```
 
 **Process**:
-1. Finds all `.ts` files in `code/` and `solution/` directories
-2. Runs each file sequentially with `tsx`
+1. Finds all `.ts` files in `code/`, `solution/`, and `samples/` directories
+2. Runs each file with `tsx` (120-second timeout)
 3. Provides automated input for interactive examples
-4. Reports success/failure with detailed error messages
-5. Exits with error code 1 if any examples fail
+4. Starts server examples, checks for a ready message, then stops them
+5. Reports success/failure with detailed error messages
+6. Exits with error code 1 if any examples fail
 
 ### CI/CD Pipeline
 
 GitHub Actions workflow (`.github/workflows/validate-examples.yml`):
 - **Triggers**: Only runs when commit message or PR title contains "validate-examples", or manually triggered
 - Tests on Node.js 22 (LTS)
-- Runs full validation suite
+- Runs `npm run test:parallel`
 - Uses secrets: `AI_API_KEY`, `AI_ENDPOINT`, `AI_MODEL`, `AI_EMBEDDING_MODEL`
 - Timeout: 30 minutes
 
@@ -266,25 +278,20 @@ git commit -m "Update RAG examples validate-examples"
 3. Follow existing patterns for imports and structure
 4. Test locally: `npx tsx path/to/05-new-example.ts`
 5. Run build check: `npm run build`
-6. No changes to `validate-examples.ts` needed
+6. No changes to `scripts/validation-common.ts` needed
 
-### Slow Example (Multiple API calls or >30 seconds)
+### Slow Example (Multiple API calls)
 
 1. Create the example file as above
-2. Add filename to `SLOW_FILES` array in `validate-examples.ts`:
-```typescript
-const SLOW_FILES = [
-  "03-model-comparison.ts",
-  "your-new-slow-file.ts", // Add here
-];
-```
+2. All examples already have a 120-second timeout — no extra list is required
+3. If an example cannot run against Microsoft Foundry (API limitation), add it to `SKIP_FILES` in `scripts/validation-common.ts`
 
 ### Interactive Example (Requires user input)
 
 1. Create the example file
-2. Add to `INTERACTIVE_FILES` array in `validate-examples.ts`:
+2. Add to `INTERACTIVE_FILES` in `scripts/validation-common.ts`:
 ```typescript
-const INTERACTIVE_FILES = [
+export const INTERACTIVE_FILES = [
   { file: "chatbot.ts", input: "Hello\n" },
   { file: "your-new-interactive.ts", input: "test input\n" },
 ];
@@ -318,7 +325,7 @@ npm test
 
 - All TypeScript files must compile (`npm run build` passes)
 - Changed examples must run successfully
-- Update `validate-examples.ts` if adding interactive/slow files
+- Update `scripts/validation-common.ts` if adding interactive, server, or skipped files
 - Update chapter README.md if adding new concepts
 - Include comments in code for educational clarity
 
@@ -343,9 +350,9 @@ const apiKey = process.env.AI_API_KEY;
 
 ### Rate Limiting
 
-- Validation script runs examples sequentially to avoid rate limits
-- Interactive examples timeout after 30-60 seconds
-- Consider rate limits when adding multiple API calls
+- Sequential validation (`npm test`) runs examples one at a time to avoid rate limits
+- All examples timeout after 120 seconds
+- Consider rate limits when adding multiple API calls or using `npm run test:parallel`
 
 ## Troubleshooting
 
@@ -361,8 +368,9 @@ AI_EMBEDDING_MODEL=text-embedding-3-small
 
 ### "Command timed out"
 
-- Add file to `SLOW_FILES` in `validate-examples.ts`
-- Check for infinite loops or hanging API calls
+- All examples already have a 120-second timeout
+- Check for infinite loops, hanging API calls, or too many sequential model requests
+- If the example cannot run on Microsoft Foundry, add it to `SKIP_FILES` in `scripts/validation-common.ts`
 
 ### "Module not found"
 
@@ -441,7 +449,7 @@ npx tsx 08-agentic-rag-systems/samples/mcp-rag-server/mcp-rag-agent.ts
 
 - Start with `00-course-setup` for environment configuration
 - Each chapter has learning objectives in its README.md
-- Follow the agent-first progression (Chapters 4 → 5 → 6 → 7)
+- Follow the agent-first progression (Chapters 4 → 5 → 6 → 7 → 8)
 - Try the assignments before looking at solutions
 - Examples in `code/` directory demonstrate concepts
 - Solutions in `solution/` directory show complete implementations
@@ -476,7 +484,8 @@ npm run dev <file>            # Watch mode
 
 # Testing
 npm run build                 # Type-check (fast)
-npm test                      # Full validation (slow)
+npm test                      # Full validation (sequential)
+npm run test:parallel         # Full validation (parallel / CI)
 npx tsx <file>                # Run individual file
 
 # Trigger CI/CD validation

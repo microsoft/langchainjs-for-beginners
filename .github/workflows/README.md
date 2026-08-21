@@ -13,7 +13,7 @@ Validates all code examples in the course when explicitly requested. **Does not 
 - Verifies they execute without errors
 - Tests on Node.js 22 (LTS)
 - Automatically provides input for interactive examples
-- Makes 60+ API calls
+- Runs `npm run test:parallel` (120-second timeout per example)
 
 **How to trigger:**
 
@@ -51,13 +51,14 @@ To validate all examples on your local machine:
 # Install dependencies first
 npm install
 
-# Run validation
+# Sequential validation (safer against rate limits)
 npm test
-# or
-npm run validate
+
+# Parallel validation (faster; matches CI)
+npm run test:parallel
 ```
 
-**Note:** You need `AI_API_KEY`, `AI_ENDPOINT`, and `AI_MODEL` environment variables set. See [Course Setup](../../00-course-setup/README.md) for details.
+**Note:** You need `AI_API_KEY`, `AI_ENDPOINT`, `AI_MODEL`, and `AI_EMBEDDING_MODEL` in `.env`. See [Course Setup](../../00-course-setup/README.md) for details.
 
 ## GitHub Actions Secrets Setup
 
@@ -72,10 +73,12 @@ Configure Microsoft Foundry credentials as repository secrets:
 
 ## Validation Details
 
-The validation script:
-- ✅ Finds all `.ts` files in `code/` and `solution/` directories
-- ✅ Executes each file with a 30-second timeout (60s for slow examples)
+The validation scripts (`scripts/validate-examples.ts` and `scripts/validate-examples-parallel.ts`) share config in `scripts/validation-common.ts`:
+- ✅ Finds all `.ts` files in `code/`, `solution/`, and `samples/` directories
+- ✅ Executes each file with a 120-second timeout
 - ✅ Automatically provides input for interactive examples
+- ✅ Starts server examples, checks for a ready message, then stops them
+- ✅ Skips files listed in `SKIP_FILES` (currently `temperature-lab.ts`)
 - ✅ Reports success/failure rates
 - ✅ Exits with error code if any examples fail
 
@@ -86,6 +89,7 @@ These files require user interaction and receive automated input during testing:
 - `streaming-chat.ts` - Receives "Hello\n" as input
 - `qa-program.ts` - Receives "What is 2+2?\n" as input
 - `03-human-in-loop.ts` - Receives "yes\nno\nno\n" as input
+- `conversational-rag.ts` - Receives "What is TypeScript?\n" as input
 
 ### Test Results
 
@@ -99,9 +103,10 @@ After running, you'll see:
 
 When adding new code examples:
 
-1. **Standard examples** - Will be automatically detected and tested
-2. **Interactive examples** - Add filename to `INTERACTIVE_FILES` array in `validate-examples.ts`
-3. **Slow examples** - Add filename to `SLOW_FILES` array for 60s timeout
+1. **Standard examples** - Will be automatically detected and tested (120-second timeout)
+2. **Interactive examples** - Add an entry to `INTERACTIVE_FILES` in `scripts/validation-common.ts`
+3. **Server examples** - Add an entry to `SERVER_FILES` in `scripts/validation-common.ts`
+4. **Skipped examples** - Add to `SKIP_FILES` in `scripts/validation-common.ts` only if the example cannot run on Microsoft Foundry
 
 ## Troubleshooting
 
@@ -120,7 +125,7 @@ When adding new code examples:
 
 ✅ **DO:**
 - Test examples locally before committing
-- Add timeouts for long-running examples
+- Keep examples within the 120-second validation timeout
 - Include error handling in examples
 - Document any special requirements
 
